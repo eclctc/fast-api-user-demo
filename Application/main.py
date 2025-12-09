@@ -7,3 +7,13 @@ import crud
 import models
 import schemas
 
+
+
+
+app = FastAPI()
+
+
+@app.get("/")
+async def docs_redirect():
+    response = RedirectResponse(url='/docs')
+    return response
