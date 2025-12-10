@@ -23,3 +23,10 @@ def get_db():
       yield db
   finally:
       db.close()
+
+
+# GET endpoint to retrieve a list of users. It accepts optional skip and limit parameters for pagination and fetches users from the database using the get_users function in crud. The retrieved users are then returned as a response.
+@app.get("/users/", response_model=List[schemas.User])
+def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    users = crud.get_users(db, skip=skip, limit=limit)
+    return users
