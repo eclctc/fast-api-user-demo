@@ -37,3 +37,11 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
+
+# GET endpoint to retrieve a single user by their email. It accepts a user_email parameter and fetches the user from the database using the get_user_by_email function in crud. If the user is not found, it raises an HTTPException with a 404 status code and a "User not found" message. The retrieved user is then returned as a response.
+@app.get("/users/email/{user_email}", response_model=schemas.User)
+def read_user_by_email(user_email: str, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_email(db, email = user_email)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_user
