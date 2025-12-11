@@ -34,3 +34,10 @@ def update_user(db: Session, user: schemas.UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+# Deletes an existing user from the database by using their ID. It takes a user_id as input and returns the deleted user as a response.
+def delete_user(db: Session, user_id: int):
+    record_obj = db.query(models.User).filter(models.User.id==user_id).first()
+    db.delete(record_obj)
+    db.commit()
+    return record_obj
