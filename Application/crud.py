@@ -14,3 +14,14 @@ def get_user(db: Session, user_id: int):
 # Fetches a single user from the database by their email. It returns the retrieved user as a response.
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
+
+# Creates a new user in the database. It takes a user object of type UserCreate as input and returns the created user as a response.
+def create_user(db: Session, user: schemas.UserCreate):
+    fake_hashed_password = hash(user.password)
+    db_user = models.User(email=user.email, hashed_password=fake_hashed_password
+                        ,username = user.username, first_name = user.first_name, last_name = user.last_name,
+                        gender = user.gender, country = user.country, isActive = user.isActive)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
