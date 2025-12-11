@@ -25,3 +25,12 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+# Updates an existing user in the database by using their email. It takes a user object of type UserCreate as input and returns the updated user as a response.
+def update_user(db: Session, user: schemas.UserCreate):
+    db_user = db.query(models.User).filter(models.User.email == user.email).first()
+    for field in user.__dict__:
+        setattr(db_user, field, getattr(user, field))
+    db.commit()
+    db.refresh(db_user)
+    return db_user
